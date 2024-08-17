@@ -8,25 +8,46 @@ namespace WeatherDisplayApp.Services.Services;
 
 public class WeatherService : IWeatherService
 {
-    private readonly IHttpClientFactory _httpClientFactor;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
     public WeatherService(
-        IHttpClientFactory httpClientFactor,
+        IHttpClientFactory httpClientFactory,
         IConfiguration configuration)
     {
-        _httpClientFactor = httpClientFactor;
+        _httpClientFactory = httpClientFactory;
         _configuration = configuration;
     }
 
-    public async Task<CoordinatesByLocationNameModel?> CoordinatesByLocationName(string cityName)
+    public async Task<CurrentWeatherModel?> GetCurrentWeatherData(string cityName)
     {
-        var client = _httpClientFactor.CreateClient();
-        var response = await client.GetAsync($"{Constants.BaseAddress}{Constants.GetCoordinatesByLocationName}?q={cityName}&appid={_configuration[Constants.OpenWeatherApiKey]}");
+        CoordinatesByLocationNameModel? coordinates = await GetCoordinatesByLocationName(cityName);
 
-        CoordinatesByLocationNameModel? coordinates = new();
+        if (coordinates is null)
+        {
+            return null;
+        }
 
-        if (response.IsSuccessStatusCode)
+        var response = await GetAsync($"{Constants.BaseAddress}{Constants.GetCurrentWeatherData}?lat={coordinates.Latitude}&lon={coordinates.Longitude}&appid={_configuration[Constants.OpenWeatherApiKey]}");
+
+        CurrentWeatherModel? currentWeather = null;
+
+        if (response?.IsSuccessStatusCode ?? false)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            currentWeather = JsonSerializer.Deserialize<CurrentWeatherModel>(content);
+        }
+
+        return currentWeather;
+    }
+
+    private async Task<CoordinatesByLocationNameModel?> GetCoordinatesByLocationName(string cityName)
+    {
+        var response = await GetAsync($"{Constants.BaseAddress}{Constants.GetCoordinatesByLocationName}?q={cityName}&appid={_configuration[Constants.OpenWeatherApiKey]}");
+
+        CoordinatesByLocationNameModel? coordinates = null;
+
+        if (response?.IsSuccessStatusCode ?? false)
         {
             var content = await response.Content.ReadAsStringAsync();
             var coordinatesResult = JsonSerializer.Deserialize<List<CoordinatesByLocationNameModel>>(content);
@@ -35,5 +56,13 @@ public class WeatherService : IWeatherService
         }
 
         return coordinates;
+    }
+
+    private async Task<HttpResponseMessage?> GetAsync(string url)
+    {
+        var client = _httpClientFactory.CreateClient();
+        var response = await client.GetAsync(url);
+
+        return response;
     }
 }

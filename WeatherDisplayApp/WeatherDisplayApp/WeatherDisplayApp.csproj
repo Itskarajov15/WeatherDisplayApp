@@ -15,8 +15,4 @@
     <ProjectReference Include="..\WeatherDisplayApp.Services\WeatherDisplayApp.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

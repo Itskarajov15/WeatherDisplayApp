@@ -4,5 +4,5 @@ namespace WeatherDisplayApp.Services.Contracts;
 
 public interface IWeatherService
 {
-    public Task<CoordinatesByLocationNameModel?> CoordinatesByLocationName(string cityName);
+    Task<CurrentWeatherModel?> GetCurrentWeatherData(string cityName);
 }
