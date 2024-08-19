@@ -5,8 +5,11 @@ namespace WeatherDisplayApp.Data.Models;
 public class TemperatureModel
 {
     [JsonPropertyName("temp")]
-    public double Temp { get; set; }
+    public double TempInKelvin { get; set; }
 
-    [JsonPropertyName("feels_like")]
-    public double FeelsLike { get; set; }
+    [JsonPropertyName("tempInCelsius")]
+    public double TempInCelsius => TempInKelvin - 273.15;
+
+    [JsonPropertyName("tempInFarenhait")]
+    public double TempInFarenhait => (TempInKelvin - 273.15) * 9 / 5 + 32;
 }

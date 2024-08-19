@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Serilog;
 using WeatherDisplayApp.Extensions;
 
@@ -14,6 +15,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(corsBuilder =>
+    corsBuilder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
 
 app.UseExceptionHandler();
 
