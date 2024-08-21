@@ -15,7 +15,7 @@ public class WeatherController : ControllerBase
         _weatherService = weatherService;
     }
 
-    [HttpGet("{cityName}")]
+    [HttpGet("getCurrentWeatherData/{cityName}")]
     [ProducesResponseType(typeof(CurrentWeatherModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,5 +1,5 @@
 export async function getWeather(cityName) {
-    const response = await fetch(`https://localhost:7279/api/weather/${cityName}`);
+    const response = await fetch(`https://localhost:7279/api/weather/getCurrentWeatherData/${cityName}`);
 
     if (response.status === 400) {
       throw new Error("Bad Request: The name of the city is required.");
