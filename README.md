@@ -6,7 +6,7 @@ npm ci
 npm run serve
 ```
 
-and to run the tests run the command:
+and to run the tests, run the command:
 ```
 npm run test
 ```
@@ -16,4 +16,8 @@ npm run test
 To start the API, enter the WeatherDisplayApp directory and run the command:
 ```
 dotnet run
+```
+and to run the tests, run the command:
+```
+dotnet test
 ```
