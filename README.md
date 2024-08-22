@@ -17,7 +17,9 @@ To start the API, enter the WeatherDisplayApp directory and run the command:
 ```
 dotnet run
 ```
-and to run the tests, run the command:
+To open the Swagger after running the API, you can go to this page https://localhost:7279/swagger/index.html
+
+To run the tests, run the command:
 ```
 dotnet test
 ```
